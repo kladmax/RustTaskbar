@@ -1,3 +1,5 @@
+#![windows_subsystem = "windows"]
+
 use eframe::{egui, epi};
 use std::process::Command;
 use std::sync::mpsc;

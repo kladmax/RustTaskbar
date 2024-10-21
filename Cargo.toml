@@ -7,3 +7,8 @@ edition = "2021"
 egui = "0.17.0"
 eframe = "0.17.0"
 
+[[bin]]
+name = "hibernate_rustc_1_82_0"
+path = "src/main.rs"
+# Додаємо наступне, щоб приховати консольне вікно
+# windows_subsystem = "windows"
