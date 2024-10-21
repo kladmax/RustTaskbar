@@ -6,6 +6,7 @@ use std::time::{Duration, Instant};
 
 struct MyApp {
     idle_time: u32,
+    timer_active: bool,
     timer_sender: Option<mpsc::Sender<()>>,
 }
 
@@ -13,6 +14,7 @@ impl Default for MyApp {
     fn default() -> Self {
         Self {
             idle_time: 0,
+            timer_active: false,
             timer_sender: None,
         }
     }
@@ -32,22 +34,30 @@ impl epi::App for MyApp {
                 ui.add(egui::Slider::new(&mut self.idle_time, 0..=60));
             });
 
-            if ui.button("Set Timer").clicked() {
-                let (sender, receiver) = mpsc::channel();
-                self.timer_sender = Some(sender);
-
-                let idle_duration = Duration::from_secs((self.idle_time * 60) as u64);
-
-                thread::spawn(move || {
-                    let start_time = Instant::now();
-                    while Instant::now().duration_since(start_time) < idle_duration {
-                        thread::sleep(Duration::from_secs(1));
-                        if receiver.try_recv().is_ok() {
-                            return;
-                        }
+            if ui.add(egui::Button::new("Set Timer").fill(if self.timer_active { egui::Color32::GREEN } else { egui::Color32::RED })).clicked() {
+                if self.timer_active {
+                    if let Some(sender) = self.timer_sender.take() {
+                        sender.send(()).ok();
                     }
-                    run_hibernate();
-                });
+                    self.timer_active = false;
+                } else {
+                    let (sender, receiver) = mpsc::channel();
+                    self.timer_sender = Some(sender);
+
+                    let idle_duration = Duration::from_secs((self.idle_time * 60) as u64);
+                    self.timer_active = true;
+
+                    thread::spawn(move || {
+                        let start_time = Instant::now();
+                        while Instant::now().duration_since(start_time) < idle_duration {
+                            thread::sleep(Duration::from_secs(1));
+                            if receiver.try_recv().is_ok() {
+                                return;
+                            }
+                        }
+                        run_hibernate();
+                    });
+                }
             }
 
             if ui.button("Run Hibernate").clicked() {
