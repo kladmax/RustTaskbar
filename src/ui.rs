@@ -1,4 +1,4 @@
-use eframe::{egui, epi};
+use eframe::{egui, App};
 use std::sync::mpsc;
 use std::thread;
 use std::time::{Duration, Instant};
@@ -12,6 +12,7 @@ pub struct MyApp {
     timer_sender: Option<mpsc::Sender<()>>, // Канал для зупинки таймера
 }
 
+// Реалізація за замовчуванням
 impl Default for MyApp {
     fn default() -> Self {
         Self {
@@ -23,12 +24,8 @@ impl Default for MyApp {
 }
 
 // Реалізація логіки UI
-impl epi::App for MyApp {
-    fn name(&self) -> &str {
-        "Hibernate Task"
-    }
-    // Оновлення UI для відображення та взаємодії з користувачем
-    fn update(&mut self, ctx: &egui::Context, _frame: &epi::Frame) {
+impl App for MyApp {
+    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("Hibernate Task"); // Назва додатку
             // Елемент управління для вибору часу простою

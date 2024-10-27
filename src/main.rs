@@ -1,31 +1,23 @@
-// main.rs ініціалізує додаток.
-// config.rs містить конфігурацію.
-// ui.rs створює UI і керує його взаємодією.
-// logic.rs запускає команди для переходу системи в режим гібернації.
-
-// main.rs
-// Цей файл ініціалізує програму, імпортує необхідні модулі та викликає основний цикл додатку.
-
-// Забезпечує, що програма працює без створення додаткового консолевого вікна в Windows.
+// Забезпечує, що програма працює без створення додаткового консольного вікна в Windows.
 #![windows_subsystem = "windows"]
 
 // Імпортуємо модулі для графічного інтерфейсу (eframe та egui) і конфігураційний файл.
 use eframe::NativeOptions;
 use crate::ui::MyApp;
 
-
 mod ui;
 mod logic;
 mod config;
-// mod taskbar; // 
 
 fn main() {
     // Створюємо стандартні налаштування для eframe.
     let options = NativeOptions::default();
 
-    // Запускаємо графічний інтерфейс і передаємо у програму структуру MyApp.
+    // Запускаємо графічний інтерфейс, передаємо у програму структуру MyApp.
+    let window_title = "Hibernate Task";
     eframe::run_native(
-        Box::new(MyApp::default()),
+        window_title,
         options,
-    );
+        Box::new(|_cc| Ok(Box::new(MyApp::default()))),
+    ).expect("Failed to start the application");
 }
