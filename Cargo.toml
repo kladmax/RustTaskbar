@@ -3,9 +3,14 @@ name = "hibernate_rustc_1_82_0"
 version = "0.1.0"
 edition = "2021"
 
+
 [dependencies]
 egui = "0.17.0"
 eframe = "0.17.0"
+tao = "0.30.3"
+tray-icon = "0.19.1"
+winit = "0.30.5"
+
 
 [[bin]]
 name = "hibernate_rustc_1_82_0"

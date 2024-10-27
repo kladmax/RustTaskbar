@@ -1,6 +1,3 @@
-// ui.rs
-
-// Імпортуємо основні елементи для побудови UI
 use eframe::{egui, epi};
 use std::sync::mpsc;
 use std::thread;
@@ -30,22 +27,22 @@ impl epi::App for MyApp {
     fn name(&self) -> &str {
         "Hibernate Task"
     }
-
     // Оновлення UI для відображення та взаємодії з користувачем
     fn update(&mut self, ctx: &egui::Context, _frame: &epi::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("Hibernate Task"); // Назва додатку
-
             // Елемент управління для вибору часу простою
             ui.horizontal(|ui| {
                 ui.label("Idle Time (minutes):");
                 ui.add(egui::Slider::new(&mut self.idle_time, 0..=MAX_IDLE_TIME));
             });
+            // Розмір для кнопок
+            let button_size = egui::vec2(200.0, 40.0);
 
             // Кнопка для встановлення або скидання таймера
-            if ui.add(egui::Button::new("Set Timer")
+            if ui.add_sized(button_size, egui::Button::new("Set Timer")
                     .fill(if self.timer_active { egui::Color32::GREEN } else { egui::Color32::RED }))
-                .clicked() 
+                .clicked()
             {
                 if self.timer_active {
                     if let Some(sender) = self.timer_sender.take() {
@@ -55,10 +52,8 @@ impl epi::App for MyApp {
                 } else {
                     let (sender, receiver) = mpsc::channel();
                     self.timer_sender = Some(sender);
-
                     let idle_duration = Duration::from_secs((self.idle_time * 60) as u64);
                     self.timer_active = true;
-
                     // Створюємо новий потік для таймера
                     thread::spawn(move || {
                         let start_time = Instant::now();
@@ -72,9 +67,8 @@ impl epi::App for MyApp {
                     });
                 }
             }
-
             // Додаткова кнопка для негайного запуску гібернації
-            if ui.button("Run Hibernate").clicked() {
+            if ui.add_sized(button_size, egui::Button::new("Run Hibernate")).clicked() {
                 run_hibernate();
             }
         });

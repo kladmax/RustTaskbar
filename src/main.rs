@@ -13,9 +13,11 @@
 use eframe::NativeOptions;
 use crate::ui::MyApp;
 
+
 mod ui;
 mod logic;
 mod config;
+// mod taskbar; // 
 
 fn main() {
     // Створюємо стандартні налаштування для eframe.
