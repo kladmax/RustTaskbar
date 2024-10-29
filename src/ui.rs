@@ -69,11 +69,6 @@ impl App for MyApp {
                 }
             }
 
-            // Додаткова кнопка для негайного запуску гібернації
-            if ui.add_sized(button_size, egui::Button::new("Run Hibernate")).clicked() {
-                run_hibernate();
-            }
-
             // Третя кнопка для бездіяльності
             if ui.add_sized(button_size, egui::Button::new("Idle Timer")
                     .fill(if self.idle_timer.is_some() { egui::Color32::YELLOW } else { egui::Color32::GRAY }))
@@ -90,6 +85,10 @@ impl App for MyApp {
                     idle_timer.start();  // Запускаємо таймер бездіяльності
                     self.idle_timer = Some(idle_timer);
                 }
+            }
+             // Додаткова кнопка для негайного запуску гібернації
+             if ui.add_sized(button_size, egui::Button::new("Run Hibernate")).clicked() {
+                run_hibernate();
             }
         });
     }
