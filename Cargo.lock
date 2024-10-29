@@ -1819,6 +1819,7 @@ dependencies = [
  "egui",
  "tao",
  "tray-icon",
+ "windows 0.58.0",
  "winit",
 ]
 

@@ -8,6 +8,8 @@ use crate::ui::MyApp;
 mod ui;
 mod logic;
 mod config;
+mod idle_timer;
+
 
 fn main() {
     // Створюємо стандартні налаштування для eframe.
