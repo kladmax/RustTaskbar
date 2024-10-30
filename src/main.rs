@@ -11,6 +11,7 @@ mod ui;
 mod logic;
 mod config;
 mod idle_timer;
+mod power_management; // Підключаємо модуль power_management
 
 
 fn main() {
