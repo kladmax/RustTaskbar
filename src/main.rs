@@ -3,26 +3,20 @@
 // Забезпечує, що програма працює без створення додаткового консольного вікна в Windows.
 #![windows_subsystem = "windows"]
 
-// Імпортуємо модулі для графічного інтерфейсу (eframe та egui) і конфігураційний файл.
-use eframe::NativeOptions;
-use crate::ui::MyApp;
-
 mod ui;
 mod logic;
 mod config;
-mod idle_timer;
-mod power_management; // Підключаємо модуль power_management
-
+mod idle_button; 
+mod idle_timer; // Імпорт нового модуля для таймера бездіяльності
+mod power_management;
 
 fn main() {
-    // Створюємо стандартні налаштування для eframe.
-    let options = NativeOptions::default();
-
-    // Запускаємо графічний інтерфейс, передаємо у програму структуру MyApp.
+    let options = eframe::NativeOptions::default();
     let window_title = "Hibernate Task";
     eframe::run_native(
         window_title,
         options,
-        Box::new(|_cc| Ok(Box::new(MyApp::default()))),
+        Box::new(|_cc| Ok(Box::new(ui::MyApp::default()))),
     ).expect("Failed to start the application");
 }
+
